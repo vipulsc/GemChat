@@ -53,34 +53,32 @@ export default function Home() {
                 ) : (
                   <ReactMarkdown
                     components={{
-                      h1: ({ node, ...props }) => (
+                      h1: (props) => (
                         <h2
                           className="text-xl font-bold mt-4 mb-2"
                           {...props}
                         />
                       ),
-                      h2: ({ node, ...props }) => (
+                      h2: (props) => (
                         <h3
                           className="text-lg font-semibold mt-3 mb-1.5"
                           {...props}
                         />
                       ),
-                      ul: ({ node, ...props }) => (
+                      ul: (props) => (
                         <ul className="list-disc pl-6 my-2" {...props} />
                       ),
-                      ol: ({ node, ...props }) => (
+                      ol: (props) => (
                         <ol className="list-decimal pl-6 my-2" {...props} />
                       ),
-                      li: ({ node, ...props }) => (
-                        <li className="my-1" {...props} />
-                      ),
-                      code: ({ node, ...props }) => (
+                      li: (props) => <li className="my-1" {...props} />,
+                      code: (props) => (
                         <code
                           className="bg-[#262627] px-1.5 py-0.5 rounded text-sm"
                           {...props}
                         />
                       ),
-                      a: ({ node, ...props }) => (
+                      a: (props) => (
                         <a
                           className="text-[#208efb] hover:underline"
                           target="_blank"
