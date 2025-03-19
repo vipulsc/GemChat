@@ -1,103 +1,138 @@
-import Image from "next/image";
+"use client";
+import { useChat } from "@ai-sdk/react";
+import ReactMarkdown from "react-markdown";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen bg-[#1b1c1d]">
+      {/* Header */}
+      <header className="fixed top-0 w-full border-b border-[#2d2e2f] bg-[#1b1c1d]/95 backdrop-blur-md z-10">
+        <div className="max-w-4xl mx-auto p-4 flex items-center gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-[#262627]">
+              <svg
+                className="w-6 h-6 text-[#208efb]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-[#fefefe]">GemChat</h1>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </header>
+
+      {/* Chat Messages */}
+      <div className="max-w-4xl mx-auto pt-20 pb-24 px-4 space-y-6">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${
+              message.role === "user" ? "justify-end" : "justify-start"
+            }`}
+          >
+            <div
+              className={`max-w-3xl p-4 rounded-2xl ${
+                message.role === "user"
+                  ? "bg-[#262627] border border-[#363738]"
+                  : "bg-[#232425] border border-[#2d2e2f]"
+              }`}
+            >
+              <div className="text-[#fefefe] prose prose-invert max-w-none">
+                {message.role === "user" ? (
+                  message.content
+                ) : (
+                  <ReactMarkdown
+                    components={{
+                      h1: ({ node, ...props }) => (
+                        <h2
+                          className="text-xl font-bold mt-4 mb-2"
+                          {...props}
+                        />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h3
+                          className="text-lg font-semibold mt-3 mb-1.5"
+                          {...props}
+                        />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul className="list-disc pl-6 my-2" {...props} />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol className="list-decimal pl-6 my-2" {...props} />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li className="my-1" {...props} />
+                      ),
+                      code: ({ node, ...props }) => (
+                        <code
+                          className="bg-[#262627] px-1.5 py-0.5 rounded text-sm"
+                          {...props}
+                        />
+                      ),
+                      a: ({ node, ...props }) => (
+                        <a
+                          className="text-[#208efb] hover:underline"
+                          target="_blank"
+                          rel="noopener"
+                          {...props}
+                        />
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Input Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="fixed bottom-0 left-0 right-0 bg-[#1b1c1d] border-t border-[#2d2e2f]"
+      >
+        <div className="max-w-4xl mx-auto p-4">
+          <div className="flex gap-2 items-center">
+            <input
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Message GemChat..."
+              className="flex-1 p-4 bg-[#262627] rounded-xl border border-[#363738] focus:outline-none focus:border-[#208efb]/30 focus:ring-2 focus:ring-[#208efb]/20 placeholder:text-[#7d7e7f] text-[#fefefe]"
+            />
+            <button
+              type="submit"
+              className="p-3 bg-[#262627] rounded-xl border border-[#363738] hover:border-[#208efb]/40 transition-colors"
+            >
+              <svg
+                className="w-6 h-6 text-[#208efb]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }
