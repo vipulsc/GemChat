@@ -1,6 +1,7 @@
 # GemChat
 
-GemChat is a modern, real-time chat application built with Next.js and AI integration. It provides a sleek, dark-themed interface for engaging conversations with AI assistance.
+GemChat is a modern, real-time chat application built with Next.js and AI integration. 
+It provides a sleek, dark-themed interface for engaging conversations with AI assistance.
 
 ## Features
 
@@ -56,7 +57,8 @@ yarn dev
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! 
+Please feel free to submit a Pull Request.
 
 ## License
 
